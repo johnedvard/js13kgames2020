@@ -1,0 +1,21 @@
+{
+  "name": "gamejam-seed",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --public-url ./"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "audio": "^1.2.0",
+    "kontra": "^6.4.0",
+    "parcel": "^1.12.3"
+  },
+  "devDependencies": {
+    "typescript": "^3.6.2"
+  }
+}
