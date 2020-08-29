@@ -1,60 +1,45 @@
-import { init, GameLoop, initPointer, on, Sprite, setStoreItem, getStoreItem, emit, track} from 'kontra';
-import { IGameObject } from './gameObject';
-import { GameEvent, GameEventData } from './gameEvent';
+import { createCardDeck, shuffleDeck } from './cardUtils';
+import { Card } from './Icard';
+import { Player } from './player';
 export class Game {
-    gameObjects: IGameObject[] = [];
-    gameCanvas;
-    canvasSprite;
     modalEl: HTMLElement;
+    gameEl: HTMLElement;
     isSubscriber = false;
-    loop: GameLoop;
+    deck: Card[];
+    originalDeck: Card[];
+    player: Player;
+    dealer: Player;
     constructor() {
-        const { canvas, context } = init('game');
+        this.player = new Player();
+        this.dealer = new Player();
         this.checkForSubscriber();
         this.modalEl = document.getElementById('modal');
-        this.gameCanvas = canvas;
-        this.gameObjects = [];
-        initPointer();
-        this.loop = GameLoop({ 
-            update: this.update,
-            render: this.render,
-        });
-        this.createCanvasSprite();
-        this.loop.start();
+        this.gameEl = document.getElementById('game');
+        this.deck = createCardDeck();
+        this.originalDeck = [...this.deck];
+        shuffleDeck(this.deck);
+        this.dealStartHand(this.deck);
+        this.startGame();
     }
-    render = () => {
-        this.canvasSprite.render();
-        this.gameObjects.forEach(go => {
-            if(go) {
-                go.render();
-            }
-        });
+    
+    updatePlayerHands(){
+      const gameCard = document.createElement("game-card");
+      gameCard.setAttribute('face', 'Toast');
+      gameCard.setAttribute('face', 'Toaster');
+      this.gameEl.appendChild(gameCard);
     }
-    update = (dt: number) => {
-        this.canvasSprite.update();
-        this.gameObjects.forEach(go => {
-            go.update();
-        });
+
+    startGame(){
+      window.requestAnimationFrame(() => {
+        this.updatePlayerHands();
+      })
     }
-    onGameObjectKill() {
-        on(GameEvent.KILL, (event: GameEventData) => {
-        });
-    }
-    createLevel(level: number){
-        
-    }
-    createCanvasSprite(){
-        this.canvasSprite = Sprite({
-            x: 0,
-            y: 0,
-            width: this.gameCanvas.width,
-            height: this.gameCanvas.height,
-            color: "rgba(125,125,125,0.2)",
-            onDown: this.onCanvasDown,
-        });
-        track(this.canvasSprite);
-    }
-    onCanvasDown = (pointer) => {
+    /**
+     * The dealer and player gets two cards from the start
+     */
+    dealStartHand(deck: Card[]){
+      this.player.giveCards([deck.pop(), deck.pop()]);
+      this.dealer.giveCards([deck.pop(), deck.pop()]);
     }
     
     createMessage(msg: string){

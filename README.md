@@ -2,7 +2,7 @@
 
 This is a project used as a seed to start creating your game without doing all the heavy lifting by setting up your project
 
-This project uses typescript and Kontra as the game engine.
+This project uses typescript and custom-elements
 
 ## Start testing your game
 
