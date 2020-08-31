@@ -1,3 +1,6 @@
+:root {
+  --card-radius: 5px;
+}
 body{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 12px;
@@ -37,8 +40,106 @@ body{
     display: grid;
     max-width: 100%;
     height: 100%;
+    grid-template-areas: 
+      "deck dealer dealer dealer"
+      "deck dealerTotal dealerTotal dealerTotal"
+      "betZone playerTotal playerTotal playerTotal"
+      "betZone player player player"
+      "controls controls controls controls";
     margin: 80px;
-    border: 4px solid black;
+    padding: 12px;
+}
+#playerTotal{
+  grid-area: playerTotal;
+  min-height: 10px;
+  align-self: end;
+}
+#dealerTotal{
+  grid-area: dealerTotal;
+  min-height: 10px;
+  align-self: start;
+}
+#dealer {
+  display: flex;
+  grid-area: dealer;
+}
+
+#player {
+  display: flex;
+  align-items: flex-end;
+  grid-area: player;
+}
+
+game-chip{
+  z-index: 200;
+}
+#player game-card:nth-child(n) {
+  margin-right: -50px;
+}
+
+#dealer game-card:nth-child(n) {
+  margin-right: -50px;
+}
+
+#controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: flex-end;
+  width: 100%;
+  grid-area: controls;
+  height: 100px;
+}
+
+button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+button:focus{
+  outline: 0px;
+}
+#btnHit {
+  background: white;
+}
+#btnHold {
+  background: white;
+}
+#btnBet {
+  background: white;
+}
+#betzone {
+  display: flex;
+  grid-area: betZone;
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px dashed black;
+  justify-self: center;
+  align-self: end;
+  align-items: center;
+  justify-content: center;
+}
+
+.txt-betzone {
+  position: absolute;
+  margin: 0 auto;
+  z-index: 100;
+}
+
+#deck {
+  display: flex;
+  grid-area: deck;
+  background-color: white;
+  border: 1px solid black;
+  background-image: url("./src/assets/pattern1.png");
+  background-repeat: repeat;
+  border-radius: var(--card-radius);
+  height: 105px;
+  width: 75px;
+  justify-self: center;
 }
 
 #game.subscriber {

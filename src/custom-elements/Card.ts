@@ -29,11 +29,18 @@ export class Card extends HTMLElement {
   }
 
   updateFace(attribute: string){
-    this.faceElem.textContent = this.getAttribute(attribute);
+    if(attribute === "face") {
+      // this.faceElem.textContent = this.getAttribute(attribute);
+    } else if(attribute === "value") {
+      this.valElem.textContent = this.getAttribute(attribute);
+      if(this.getAttribute(attribute) === "404") {
+        this.wrapper.classList.add("is-404");
+      }
+    }
   }
 
   createElem(wrapper: HTMLDivElement, someVal: string): HTMLElement {;
-    const newElem = document.createElement("p");
+    const newElem = document.createElement("span");
     newElem.appendChild(document.createTextNode(someVal));
     wrapper.appendChild(newElem);
     return newElem;
@@ -44,10 +51,15 @@ export class Card extends HTMLElement {
   createStyle(): HTMLStyleElement {
     const style = document.createElement('style');
     style.textContent = `.card-wrapper { 
-      display: flex;
-      height: 150px; 
-      width: 150px; 
+      height: 105px;
+      width: 75px;
+      border-radius: 5px;
       border: 1px solid black;
+      background-color: white;
+    }
+    .is-404 {
+      writing-mode: vertical-lr;
+      text-orientation: upright;
     }`
     return style;
   }
