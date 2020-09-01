@@ -40,7 +40,7 @@ export class Card extends HTMLElement {
   }
 
   createElem(wrapper: HTMLDivElement, someVal: string): HTMLElement {;
-    const newElem = document.createElement("span");
+    const newElem = document.createElement("div");
     newElem.appendChild(document.createTextNode(someVal));
     wrapper.appendChild(newElem);
     return newElem;
@@ -56,10 +56,17 @@ export class Card extends HTMLElement {
       border-radius: 5px;
       border: 1px solid black;
       background-color: white;
+      font-size: 16px;
     }
     .is-404 {
       writing-mode: vertical-lr;
       text-orientation: upright;
+    }
+    .card-wrapper div {
+      margin: 3px 0px 0px 6px;
+    }
+    .is-404 div{
+      margin: 3px 0px 0px 0px;
     }`
     return style;
   }

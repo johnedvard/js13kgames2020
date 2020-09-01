@@ -37,8 +37,15 @@ export class Chip extends HTMLElement {
       height: 55px;
       width: 55px;
       border-radius: 50%;
-      border: 4px double black;
-      background-color: green;
+      border: 10px double white;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      background:
+      radial-gradient(circle at 100% 50%, transparent 20%, rgba(255,255,255,.3) 21%, rgba(255,255,255,.3) 34%, transparent 35%, transparent),
+      radial-gradient(circle at 0% 50%, transparent 20%, rgba(255,255,255,.3) 21%, rgba(255,255,255,.3) 34%, transparent 35%, transparent) 0 -50px;
+      background-color: slategray;
+      background-size:75px 100px;
     }`
     return style;
   }

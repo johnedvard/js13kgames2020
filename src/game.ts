@@ -15,12 +15,17 @@ export class Game {
     totalChipsEl: HTMLElement;
     dealerTotalEl: HTMLElement;
     playerTotalEl: HTMLElement;
+    menuEl: HTMLElement;
+    closeMenuEl: HTMLElement;
+    mainMenuEl: HTMLElement;
+    mainMenuContainerEl: HTMLElement;
     isSubscriber = false;
     deck: Card[];
     originalDeck: Card[];
     player: Player;
     dealer: Player;
     display404Cards = false;
+    isMenuOpen = false;
     // playStates: string[] = ["start", "betted", "betted2x", "hold", "playerEnd", "dealerEnd"];
     currentState = "start";
     constructor() {
@@ -40,6 +45,10 @@ export class Game {
         this.totalChipsEl = document.getElementById('totalChips');
         this.dealerTotalEl = document.getElementById('dealerTotal');
         this.playerTotalEl = document.getElementById('playerTotal');
+        this.menuEl = document.getElementById('menu');
+        this.closeMenuEl = document.getElementById('closeMenu');
+        this.mainMenuEl = document.getElementById('mainMenu');
+        this.mainMenuContainerEl = document.getElementById('mainMenuContainer');
         this.deck = createCardDeck();
         this.originalDeck = [...this.deck];
         shuffleDeck(this.deck);
@@ -77,6 +86,23 @@ export class Game {
       this.btnNext.addEventListener("click", () => {
         this.startNextRound();
       });
+      this.menuEl.addEventListener("click", () => {
+        this.toggleMenu();
+      });
+      this.closeMenuEl.addEventListener("click", () => {
+        this.toggleMenu();
+      });
+    }
+
+    toggleMenu(){
+      this.isMenuOpen = !this.isMenuOpen;
+      if(this.isMenuOpen) {
+        this.mainMenuContainerEl.classList.remove("close");
+        this.mainMenuContainerEl.classList.add("open");
+      } else {
+        this.mainMenuContainerEl.classList.remove("open");
+        this.mainMenuContainerEl.classList.add("close");
+      }
     }
 
     startNextRound(){

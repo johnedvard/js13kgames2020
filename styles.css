@@ -2,15 +2,16 @@
   --card-radius: 5px;
 }
 body{
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 12px;
+    font-family: cursive, fantasy, monospace;
+    font-size: 14px;
     height: 100%;
     width: auto;
-    display: flex;
-    flex-flow: column;
     padding: 0px;
+    display: flex;
     margin: 0px;
     overflow: hidden;
+    background-color: wheat;
+    z-index: 100;
 }
 
 .modal {
@@ -38,15 +39,17 @@ body{
 
 #game {
     display: grid;
-    max-width: 100%;
+    width: 100%;
     height: 100%;
     grid-template-areas: 
       "deck dealer dealer dealer"
       "deck dealerTotal dealerTotal dealerTotal"
       "betZone playerTotal playerTotal playerTotal"
       "betZone player player player"
-      "controls controls controls controls";
-    margin: 80px;
+      "controls controls controls controls"
+      "footer footer footer footer";
+    grid-template-rows: 175px minmax(35px, min-content) minmax(35px, min-content) 175px minmax(100px, auto) 30px;
+    margin: 30px;
     padding: 12px;
 }
 #playerTotal{
@@ -82,19 +85,25 @@ game-chip{
 }
 
 #controls {
+  position: relative;
   display: flex;
   justify-content: center;
   gap: 20px;
-  align-items: flex-end;
+  align-items: center;
   width: 100%;
   grid-area: controls;
-  height: 100px;
+  min-height: 100px;
+}
+#gameFooter {
+  grid-area: footer;
 }
 
 button {
+  font-family: cursive, fantasy, monospace;
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  background: white;
 }
 
 button:focus{
@@ -115,7 +124,6 @@ button:focus{
   width: 105px;
   height: 105px;
   border-radius: 50%;
-  background-color: white;
   border: 1px dashed black;
   justify-self: center;
   align-self: end;
@@ -134,16 +142,24 @@ button:focus{
   grid-area: deck;
   background-color: white;
   border: 1px solid black;
-  background-image: url("./src/assets/pattern1.png");
-  background-repeat: repeat;
   border-radius: var(--card-radius);
   height: 105px;
   width: 75px;
   justify-self: center;
 }
-
+.pattern0 {
+  background-color: gray;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.5) 5px, rgba(255,255,255,.5) 20px);
+  background-repeat: repeat;
+}
+.pattern3 {
+  background-color:white;
+  background-image: linear-gradient(90deg, rgba(200,0,0,.5) 50%, transparent 50%),
+  linear-gradient(rgba(200,0,0,.5) 50%, transparent 50%);
+  background-size:10px 10px;
+}
 #game.subscriber {
-    border-color: gold;
+  border-color: gold;
 }
 
 .game-info{
@@ -153,8 +169,52 @@ button:focus{
     max-height: 50px;
     width: 100%;
     flex-flow: row;
-    justify-content: space-around;
+    margin-right: 30px;
+    justify-content: flex-end;
     align-items: center;
+}
+#menu{
+  position: relative;
+  margin-right: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 300;
+}
+#mainMenuBackdrop{
+  position: absolute;
+  background-color:white;
+  opacity: 0.7;
+}
+#mainMenuContainer.open #mainMenuBackdrop {
+  height: 100%;
+  width: 100%;
+  z-index: 200;
+}
+#mainMenuContainer.close #mainMenuBackdrop {
+  height: 0%;
+  width: 0%;
+  z-index: 0;
+}
+#mainMenu {
+  position: absolute;
+  display: flex;
+  z-index: 300;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
+  gap: 20px;
+}
+#mainMenuContainer.close #mainMenu {
+  z-index: 0;
+}
+#mainMenuContainer.close #mainMenu div{
+  display: none;
+}
+#closeMenu{
+  cursor: pointer;
 }
 
 .hidden{

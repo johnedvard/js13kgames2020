@@ -8,11 +8,21 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
   </head>
   <body>
+    <div id="mainMenuContainer" class="close">
+      <div id="mainMenuBackdrop">
+      </div>
+      <div id="mainMenu">
+        <div> Some item </div>
+        <div> Some item number 2</div>
+      </div>
+    </div>
+    
+
     <div class="game-info">
-      <div id="subscriber" class="hidden">Subscriber 🥇</div>
+      <div id="menu"> Menu </div>
     </div>
     <div id="game">
-      <div id="deck"></div>
+      <div id="deck" class="pattern3"></div>
       <div id="betzone"><span class="txt-betzone">bet zone</span></div>
       <div id="dealer"></div>
       <div id="dealerTotal"></div>
@@ -23,7 +33,9 @@
         <button id="btnHold" type="button"> Hold </button>
         <button id="btnBet" type="button"> Bet </button>
         <button id="btnNext" type="button"> Next </button>
-        <div> Chips left <span id="totalChips"> </span></div>
+      </div>
+      <div id="gameFooter">
+        <div class="chips-left"> Chips left <span id="totalChips"> </span></div>
       </div>
     </div>
     <div id="modal" class="modal close">
