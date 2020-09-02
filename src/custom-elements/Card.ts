@@ -35,6 +35,7 @@ export class Card extends HTMLElement {
       this.valElem.textContent = this.getAttribute(attribute);
       if(this.getAttribute(attribute) === "404") {
         this.wrapper.classList.add("is-404");
+        this.wrapper.classList.add("pattern2");
       }
     }
   }

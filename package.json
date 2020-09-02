@@ -11,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "audio": "^1.2.0",
-    "parcel": "^1.12.3"
+    "audio": "^1.2.0"
   },
   "devDependencies": {
+    "parcel": "^1.12.3",
     "typescript": "^3.6.2"
   }
 }

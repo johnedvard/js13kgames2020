@@ -4,11 +4,14 @@ export class Player {
   private _hand: Card[] = [];
   totalChips: number
   tmpRemovedChips = 0;
-  constructor() {
+  isDealer = false;
+  constructor(isDealer = false) {
+    this.isDealer = isDealer;
     this.totalChips = 110;
   }
   giveCards(cards: Card[]) {
     cards.forEach(c => this.hand.push(c));
+
   }
   removeChips(chips: number){
     this.tmpRemovedChips += chips;

@@ -16,7 +16,6 @@ export class Game {
     dealerTotalEl: HTMLElement;
     playerTotalEl: HTMLElement;
     menuEl: HTMLElement;
-    closeMenuEl: HTMLElement;
     mainMenuEl: HTMLElement;
     mainMenuContainerEl: HTMLElement;
     isSubscriber = false;
@@ -26,11 +25,12 @@ export class Game {
     dealer: Player;
     display404Cards = false;
     isMenuOpen = false;
+    animationTime = 1000;
     // playStates: string[] = ["start", "betted", "betted2x", "hold", "playerEnd", "dealerEnd"];
     currentState = "start";
     constructor() {
-        this.player = new Player();
-        this.dealer = new Player();
+        this.player = new Player(false);
+        this.dealer = new Player(true);
         this.checkForSubscriber();
         this.modalEl = document.getElementById('modal');
         this.gameEl = document.getElementById('game');
@@ -46,7 +46,6 @@ export class Game {
         this.dealerTotalEl = document.getElementById('dealerTotal');
         this.playerTotalEl = document.getElementById('playerTotal');
         this.menuEl = document.getElementById('menu');
-        this.closeMenuEl = document.getElementById('closeMenu');
         this.mainMenuEl = document.getElementById('mainMenu');
         this.mainMenuContainerEl = document.getElementById('mainMenuContainer');
         this.deck = createCardDeck();
@@ -67,7 +66,6 @@ export class Game {
       this.btnHold.addEventListener("click", () => {
         this.currentState = "hold";
         this.reveal404Cards();
-        console.log("reveal cards for player. Make dealer AI to draw cards in order to beat player");
         this.currentState = "playerEnd";
         this.updateButtonStates();
         this.updateTurnState();
@@ -87,9 +85,6 @@ export class Game {
         this.startNextRound();
       });
       this.menuEl.addEventListener("click", () => {
-        this.toggleMenu();
-      });
-      this.closeMenuEl.addEventListener("click", () => {
         this.toggleMenu();
       });
     }
@@ -227,8 +222,9 @@ export class Game {
     }
 
     dealCard(toPlayer: Player){
-      toPlayer.giveCards([this.deck.pop()]);
-      this.updatePlayerHands();
+      const card = this.deck.pop()
+      toPlayer.giveCards([card]);
+      this.addCardToDom(toPlayer, card);
     }
 
     updatePlayerHands(){
@@ -236,8 +232,27 @@ export class Game {
       this.addCardsToDom();
     }
 
+    addCardToDom(toPlayer: Player, card: Card) {
+      const gameCardEl = this.createGameCardEl(card);
+      let playerEl = this.playerEl;
+      console.log("toPlayer", toPlayer);
+      if(toPlayer.isDealer) {
+        playerEl = this.dealerEl;
+      }
+      playerEl.appendChild(gameCardEl);
+      const deckX = this.deckEl.offsetTop;
+      const deckY = this.deckEl.offsetLeft;
+      console.log("deckY", deckY);
+      const y = gameCardEl.offsetTop;
+      console.log("y", y);
+      const x = gameCardEl.offsetLeft;
+      gameCardEl.setAttribute("style", `position: absolute; top: ${deckY}px; left:${deckX}px; transform: translate(${x-deckX}px,${y-deckY}px); transition: all ${this.animationTime}ms ease-out;`);
+      setTimeout( () => {
+        gameCardEl.setAttribute("style", "");
+      }, this.animationTime);
+    }
     addCardsToDom(){
-      this.player.hand.forEach(card => {        
+      this.player.hand.forEach(card => {
         const gameCardEl = this.createGameCardEl(card);
         this.playerEl.appendChild(gameCardEl);
       });
@@ -283,8 +298,15 @@ export class Game {
      * The dealer and player gets two cards from the start
      */
     dealStartHand(deck: Card[]){
-      this.player.giveCards([deck.pop(), deck.pop()]);
-      this.dealer.giveCards([deck.pop(), deck.pop()]);
+      let i = 0;
+      const drawOrder = [this.player, this.dealer, this.player, this.dealer];
+      
+      const drawInterval = setInterval( () => {
+        this.dealCard(drawOrder[i++]);
+        if(i >= 4) {
+          clearInterval(drawInterval);
+        }
+      }, this.animationTime);
     }
     
     createMessage(msg: string){
