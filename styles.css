@@ -10,7 +10,6 @@ body{
     display: flex;
     margin: 0px;
     overflow: hidden;
-    position: relative;
     background-color: wheat;
     z-index: 100;
 }
@@ -41,17 +40,18 @@ body{
 #game {
     display: grid;
     width: 100%;
-    height: 100%;
+    height: auto;
+    max-height: 100%;
     grid-template-areas: 
-      "deck dealer dealer dealer"
-      "deck dealerTotal dealerTotal dealerTotal"
-      "betZone playerTotal playerTotal playerTotal"
-      "betZone player player player"
-      "controls controls controls controls"
-      "footer footer footer footer";
-    grid-template-rows: 175px minmax(35px, min-content) minmax(35px, min-content) 175px minmax(100px, auto) 70px;
-    grid-template-columns: 170px min-content;
-    margin: 30px;
+      "deck dealer dealer"
+      "deck dealerTotal dealerTotal"
+      "betZone playerTotal playerTotal"
+      "betZone player player"
+      "controls controls controls"
+      "footer footer footer";
+    grid-template-rows: minmax(100px, 175px) minmax(35px, min-content) minmax(35px, min-content) 175px minmax(100px, auto) 30px;
+    grid-template-columns: minmax(100px,auto) max-content;
+    margin: 40px 30px 10px 30px;
 }
 #playerTotal{
   grid-area: playerTotal;
@@ -103,6 +103,7 @@ game-chip.move-down{
   align-items: center;
   width: 100%;
   grid-area: controls;
+  /* grid-column: 2; */
   min-height: 100px;
 }
 #gameFooter {
@@ -136,7 +137,7 @@ button:focus{
   height: 77px;
   border-radius: 50%;
   border: 1px dashed black;
-  justify-self: start;
+  justify-self: center;
   align-self: end;
   align-items: center;
   justify-content: center;
@@ -160,7 +161,7 @@ button:focus{
   border-radius: var(--card-radius);
   height: 105px;
   width: 75px;
-  justify-self: start;
+  justify-self: center;
 }
 .pattern0 {
   background-color: gray;
@@ -251,4 +252,10 @@ button:focus{
 
 .hidden{
     display: none;
+}
+
+@media screen and (min-width: 600px) {
+  #game {
+    margin: 80px 150px 40px 150px;
+  }
 }

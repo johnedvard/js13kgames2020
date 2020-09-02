@@ -51,7 +51,6 @@ export class Game {
         this.originalDeck = [...this.deck];
         shuffleDeck(this.deck);
         this.dealStartHand(this.deck);
-        this.startGame();
         this.addEventListeners();
         this.updateButtonStates();
         this.updateChipsText();
@@ -238,8 +237,8 @@ export class Game {
         if(cardValue != "404") {
           res += parseInt(cardValue);
         }else{
-          // guess the value in the 404 card
-          res += Math.floor(Math.random() * 11); 
+          // guess the value in the 404 card, random value between 1 and 10
+          res += Math.floor(Math.random() * 10)+1;
         }
       });
       return res;
@@ -277,8 +276,8 @@ export class Game {
         playerEl = this.dealerEl;
       }
       playerEl.appendChild(gameCardEl);
-      const deckX = this.deckEl.offsetTop;
-      const deckY = this.deckEl.offsetLeft;
+      const deckY = this.deckEl.offsetTop;
+      const deckX = this.deckEl.offsetLeft;
       console.log("deckY", deckY);
       const y = gameCardEl.offsetTop;
       console.log("y", y);
@@ -328,9 +327,6 @@ export class Game {
       return gameCardEl;
     }
 
-    startGame(){
-      this.updatePlayerHands();
-    }
     /**
      * The dealer and player gets two cards from the start
      */
