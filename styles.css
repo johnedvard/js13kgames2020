@@ -75,7 +75,7 @@ body{
 }
 
 game-chip{
-  z-index: 200;
+  z-index: 100;
   position:absolute;
 }
 #player game-card:nth-child(n) {
