@@ -5,6 +5,7 @@ export class Player {
   totalChips: number
   tmpRemovedChips = 0;
   isDealer = false;
+  display404Cards = false;
   constructor(isDealer = false) {
     this.isDealer = isDealer;
     this.totalChips = 110;

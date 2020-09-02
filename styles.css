@@ -77,7 +77,16 @@ body{
 game-chip{
   z-index: 100;
   position:absolute;
+  transition: all 3000ms ease-in;
 }
+game-chip.move-up{
+  transform: translateY(-4000px);
+
+}
+game-chip.move-down{
+  transform: translateY(4000px);
+}
+
 #player game-card:nth-child(n) {
   margin-right: -50px;
 }

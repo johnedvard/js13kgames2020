@@ -23,7 +23,6 @@ export class Game {
     originalDeck: Card[];
     player: Player;
     dealer: Player;
-    display404Cards = false;
     isMenuOpen = false;
     animationTime = 1000;
     // playStates: string[] = ["start", "betted", "betted2x", "hold", "playerEnd", "dealerEnd"];
@@ -65,8 +64,9 @@ export class Game {
       });
       this.btnHold.addEventListener("click", () => {
         this.currentState = "hold";
-        this.reveal404Cards();
+        this.reveal404Cards(this.player);
         this.currentState = "playerEnd";
+        this.updatePlayersTotalSum(true);
         this.updateButtonStates();
         this.updateTurnState();
       });
@@ -101,7 +101,8 @@ export class Game {
     }
 
     startNextRound(){
-      this.display404Cards = false;
+      this.player.display404Cards = false;
+      this.dealer.display404Cards = false;
       this.removeChipsFromDom();
       this.removeCardsFromDom();
       this.player.discardHand();
@@ -144,8 +145,8 @@ export class Game {
     }
 
     declareWinner(){
-      const totalSumPlayer = this.getTotalValue(this.playerEl);
-      const totalSumDealer = this.getTotalValue(this.dealerEl);
+      const totalSumPlayer = this.getTotalValue(this.player);
+      const totalSumDealer = this.getTotalValue(this.dealer);
       let youWin = false;
       if(totalSumPlayer - 21 <= 0) {
         if(totalSumDealer -21 > 0) {
@@ -154,36 +155,54 @@ export class Game {
           youWin = true;
         }
       }
-      if(youWin) {
+      if(totalSumPlayer === totalSumDealer) {
+        this.player.giveChips(this.player.tmpRemovedChips);
+        this.createMessage("It is a DRAW");
+      } else if(youWin) {
         this.player.giveChips(this.player.tmpRemovedChips*2.5);
         this.createMessage("You WIN, hurray");
+        this.animateChips(this.player);
       } else {
         this.player.giveChips(0);
         this.createMessage("You LOOSE, too bad");
+        this.animateChips(this.dealer);
       }
       this.updateChipsText();
     }
 
+    animateChips(winningPlayer: Player){
+      const gameChips = document.getElementsByTagName("game-chip");
+        for (let chip of gameChips) {
+          if(winningPlayer.isDealer) {
+            chip.classList.add("move-up");
+          } else {
+            chip.classList.add("move-down");
+          }
+        }
+    }
+
     dealersTurn() {
-      this.updatePlayersTotalSum();
       if(this.checkIfDealerShouldDrawCard()){
         this.dealCard(this.dealer);
         setTimeout(() => {
           this.dealersTurn();
         }, 1000);
       } else {
-        this.currentState = "dealerEnd";     
+        this.currentState = "dealerEnd";
+        this.dealer.display404Cards = true;
+        this.updatePlayerHands();
+        this.updatePlayersTotalSum();
         this.updateTurnState();
         this.updateButtonStates();
       }
     }
 
     checkIfDealerShouldDrawCard(){
-      const totalSumPlayer = this.getTotalValue(this.playerEl);
-      const totalSumDealer = this.getTotalValue(this.dealerEl);
+      const totalSumPlayer = this.getTotalValue(this.player);
+      const totalGuessedSumDealer = this.getGuessedTotalValue(this.dealerEl);
       if(totalSumPlayer > 21){
         return false;
-      } else if(totalSumDealer < 21 && totalSumDealer < totalSumPlayer) {
+      } else if(totalGuessedSumDealer < 21 && totalGuessedSumDealer < totalSumPlayer) {
         return true;
       }
       return false;
@@ -196,28 +215,46 @@ export class Game {
       buttonElements.forEach(btnEl => btnEl.setAttribute("disabled", "true"));
     }
 
-    updatePlayersTotalSum(){
-      const totalSumPlayer = this.getTotalValue(this.playerEl);
-      const totalSumDealer = this.getTotalValue(this.dealerEl);
+    updatePlayersTotalSum(playerOnly = false){
+      const totalSumPlayer = this.getTotalValue(this.player);
+      const totalSumDealer = this.getTotalValue(this.dealer);
       if(totalSumPlayer && totalSumDealer) {
-        this.playerTotalEl.textContent = "Sum: " + totalSumPlayer;
-        this.dealerTotalEl.textContent = "Sum: " + totalSumDealer;
+        if(playerOnly) {
+          this.playerTotalEl.textContent = "Sum: " + totalSumPlayer;
+        }else{
+          this.playerTotalEl.textContent = "Sum: " + totalSumPlayer;
+          this.dealerTotalEl.textContent = "Sum: " + totalSumDealer;
+        }
       } else {
         this.playerTotalEl.textContent = "";
         this.dealerTotalEl.textContent = "";
       }
     }
 
-    getTotalValue(aPlayerEl: HTMLElement){
+    getGuessedTotalValue(aPlayerEl: HTMLElement) {
       let res = 0;
       aPlayerEl.childNodes.forEach(gameCardEl => {
-        res += parseInt((<HTMLElement>gameCardEl).getAttribute("value"));
+        const cardValue = (<HTMLElement>gameCardEl).getAttribute("value")
+        if(cardValue != "404") {
+          res += parseInt(cardValue);
+        }else{
+          // guess the value in the 404 card
+          res += Math.floor(Math.random() * 11); 
+        }
+      });
+      return res;
+    }
+    
+    getTotalValue(aPlayere: Player){
+      let res = 0;
+      aPlayere.hand.forEach(card => {
+        res += card.value;
       });
       return res;
     }
 
-    reveal404Cards(){
-      this.display404Cards = true;
+    reveal404Cards(aPlayer: Player){
+      aPlayer.display404Cards = true;
       this.updatePlayerHands();
     }
 
@@ -233,7 +270,7 @@ export class Game {
     }
 
     addCardToDom(toPlayer: Player, card: Card) {
-      const gameCardEl = this.createGameCardEl(card);
+      const gameCardEl = this.createGameCardEl(card, toPlayer);
       let playerEl = this.playerEl;
       console.log("toPlayer", toPlayer);
       if(toPlayer.isDealer) {
@@ -253,11 +290,11 @@ export class Game {
     }
     addCardsToDom(){
       this.player.hand.forEach(card => {
-        const gameCardEl = this.createGameCardEl(card);
+        const gameCardEl = this.createGameCardEl(card, this.player);
         this.playerEl.appendChild(gameCardEl);
       });
       this.dealer.hand.forEach(card => {        
-        const gameCardEl = this.createGameCardEl(card);
+        const gameCardEl = this.createGameCardEl(card, this.dealer);
         this.dealerEl.appendChild(gameCardEl);
       });
     }
@@ -280,10 +317,10 @@ export class Game {
       }
     }
 
-    createGameCardEl(card: Card): HTMLElement{
+    createGameCardEl(card: Card, aPlayer: Player): HTMLElement{
       const gameCardEl = document.createElement("game-card", {});
       gameCardEl.setAttribute("face", card.face);
-      if(card.is404 && !this.display404Cards) {
+      if(card.is404 && !aPlayer.display404Cards) {
         gameCardEl.setAttribute("value", "404");
       }else{
         gameCardEl.setAttribute("value", ""+card.value);
