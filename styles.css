@@ -77,14 +77,14 @@ body{
 game-chip{
   z-index: 100;
   position:absolute;
-  transition: all 3000ms ease-in;
+  transition: all 2000ms ease-out;
 }
 game-chip.move-up{
-  transform: translateY(-4000px);
+  transform: translateY(-2000px);
 
 }
 game-chip.move-down{
-  transform: translateY(4000px);
+  transform: translateY(2000px);
 }
 
 #player game-card:nth-child(n) {

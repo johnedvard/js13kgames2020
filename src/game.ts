@@ -24,7 +24,7 @@ export class Game {
     player: Player;
     dealer: Player;
     isMenuOpen = false;
-    animationTime = 1000;
+    animationTime = 500;
     // playStates: string[] = ["start", "betted", "betted2x", "hold", "playerEnd", "dealerEnd"];
     currentState = "start";
     constructor() {
@@ -334,6 +334,7 @@ export class Game {
       let i = 0;
       const drawOrder = [this.player, this.dealer, this.player, this.dealer];
       
+      this.dealCard(drawOrder[i++]);
       const drawInterval = setInterval( () => {
         this.dealCard(drawOrder[i++]);
         if(i >= 4) {
