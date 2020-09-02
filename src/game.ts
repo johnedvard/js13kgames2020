@@ -24,7 +24,7 @@ export class Game {
     player: Player;
     dealer: Player;
     isMenuOpen = false;
-    animationTime = 500;
+    animationTime = 400;
     // playStates: string[] = ["start", "betted", "betted2x", "hold", "playerEnd", "dealerEnd"];
     currentState = "start";
     constructor() {
@@ -278,14 +278,13 @@ export class Game {
       playerEl.appendChild(gameCardEl);
       const deckY = this.deckEl.offsetTop;
       const deckX = this.deckEl.offsetLeft;
-      console.log("deckY", deckY);
       const y = gameCardEl.offsetTop;
-      console.log("y", y);
       const x = gameCardEl.offsetLeft;
-      gameCardEl.setAttribute("style", `position: absolute; transform: translate(${deckY}px,${deckX}px); transform: translate(${x-deckX}px,${y-deckY}px); transition: all ${this.animationTime}ms ease-out;`);
+      gameCardEl.setAttribute("style", `transform: translate(${deckX-x}px,${deckY-y}px);`);
       setTimeout( () => {
-        gameCardEl.setAttribute("style", "");
-      }, this.animationTime);
+        // use timeout to animate
+        gameCardEl.setAttribute("style", `transform: translate(${0}px,${0}px); transition: all ${this.animationTime}ms ease-out;`);
+      },75);
     }
     addCardsToDom(){
       this.player.hand.forEach(card => {
@@ -334,7 +333,6 @@ export class Game {
       let i = 0;
       const drawOrder = [this.player, this.dealer, this.player, this.dealer];
       
-      this.dealCard(drawOrder[i++]);
       const drawInterval = setInterval( () => {
         this.dealCard(drawOrder[i++]);
         if(i >= 4) {

@@ -8,6 +8,7 @@ body{
     width: auto;
     padding: 0px;
     display: flex;
+    position: relative;
     margin: 0px;
     overflow: hidden;
     background-color: wheat;
