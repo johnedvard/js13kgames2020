@@ -282,7 +282,7 @@ export class Game {
       const y = gameCardEl.offsetTop;
       console.log("y", y);
       const x = gameCardEl.offsetLeft;
-      gameCardEl.setAttribute("style", `position: absolute; top: ${deckY}px; left:${deckX}px; transform: translate(${x-deckX}px,${y-deckY}px); transition: all ${this.animationTime}ms ease-out;`);
+      gameCardEl.setAttribute("style", `position: absolute; transform: translate(${deckY}px,${deckX}px); transform: translate(${x-deckX}px,${y-deckY}px); transition: all ${this.animationTime}ms ease-out;`);
       setTimeout( () => {
         gameCardEl.setAttribute("style", "");
       }, this.animationTime);
