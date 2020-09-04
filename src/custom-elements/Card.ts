@@ -1,6 +1,6 @@
 export class Card extends HTMLElement {
   static get observedAttributes() {
-    return ['face', 'value'];
+    return ['face', 'value', 'removewrapperclass'];
   }
   wrapper: HTMLDivElement;
   faceElem: HTMLElement;
@@ -24,11 +24,12 @@ export class Card extends HTMLElement {
 
   attributeChangedCallback(attribute: string, oldValue: string, newValue: string) {
     if(newValue !== oldValue) {
-      this.updateFace(attribute);
+      this.updateStyle(attribute);
     }
   }
 
-  updateFace(attribute: string){
+  updateStyle(attribute: string){
+    console.log("attribute", attribute);
     if(attribute === "face") {
       // this.faceElem.textContent = this.getAttribute(attribute);
     } else if(attribute === "value") {
@@ -37,6 +38,8 @@ export class Card extends HTMLElement {
         this.wrapper.classList.add("is-404");
         this.wrapper.classList.add("pattern2");
       }
+    } else if(attribute === "removewrapperclass") {
+      this.wrapper.classList.remove('card-wrapper');
     }
   }
 
@@ -54,7 +57,7 @@ export class Card extends HTMLElement {
     style.textContent = `.card-wrapper { 
       height: 105px;
       width: 75px;
-      border-radius: 5px;
+      border-radius: var(--card-radius);
       border: 1px solid black;
       background-color: white;
       font-size: 16px;

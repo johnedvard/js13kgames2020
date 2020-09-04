@@ -47,15 +47,20 @@ export class Game {
         this.menuEl = document.getElementById('menu');
         this.mainMenuEl = document.getElementById('mainMenu');
         this.mainMenuContainerEl = document.getElementById('mainMenuContainer');
-        this.deck = createCardDeck();
-        this.originalDeck = [...this.deck];
-        shuffleDeck(this.deck);
-        this.dealStartHand(this.deck);
+        this.initNewGame();
+        this.dealStartHand();
         this.addEventListeners();
         this.updateButtonStates();
         this.updateChipsText();
     }
-    
+
+    initNewGame(){
+      this.deck = createCardDeck();
+      this.originalDeck = [...this.deck];
+      shuffleDeck(this.deck);
+      this.addDeckToDom(this.deck);
+    }
+
     addEventListeners(){
       this.btnHit.addEventListener("click", () => {
         this.dealCard(this.player);
@@ -70,15 +75,19 @@ export class Game {
         this.updateTurnState();
       });
       this.btnBet.addEventListener("click", () => {
-        if(this.currentState === "betted") {
-          this.currentState = "betted2x";
+        if(this.player.totalChips-10>=0) {
+          if(this.currentState === "betted") {
+            this.currentState = "betted2x";
+          } else {
+            this.currentState = "betted";
+          }
+          this.betzoneEl.appendChild(document.createElement("game-chip", {}));
+          this.player.removeChips(10);
+          this.updateButtonStates();
+          this.updateChipsText();
         } else {
-          this.currentState = "betted";
+          this.createMessage("Not enough chips");
         }
-        this.betzoneEl.appendChild(document.createElement("game-chip", {}));
-        this.player.removeChips(10);
-        this.updateButtonStates();
-        this.updateChipsText();
       });
       this.btnNext.addEventListener("click", () => {
         this.startNextRound();
@@ -100,18 +109,22 @@ export class Game {
     }
 
     startNextRound(){
-      this.player.display404Cards = false;
-      this.dealer.display404Cards = false;
-      this.removeChipsFromDom();
-      this.removeCardsFromDom();
-      this.player.discardHand();
-      this.dealer.discardHand();
-      this.currentState = "start";
-      this.updatePlayersTotalSum();
-      this.dealStartHand(this.deck);
-      this.updatePlayerHands();
-      this.updateButtonStates();
-      this.updateChipsText();
+      if(this.deck.length <= 10) {
+        this.createMessage("Time for a reshuffle");
+        this.initNewGame();
+      }
+        this.player.display404Cards = false;
+        this.dealer.display404Cards = false;
+        this.removeChipsFromDom();
+        this.removeCardsFromDom();
+        this.player.discardHand();
+        this.dealer.discardHand();
+        this.currentState = "start";
+        this.updatePlayersTotalSum();
+        this.dealStartHand();
+        this.updatePlayerHands();
+        this.updateButtonStates();
+        this.updateChipsText();
     }
 
     updateChipsText(){
@@ -158,12 +171,12 @@ export class Game {
         this.player.giveChips(this.player.tmpRemovedChips);
         this.createMessage("It is a DRAW");
       } else if(youWin) {
-        this.player.giveChips(this.player.tmpRemovedChips*2.5);
-        this.createMessage("You WIN, hurray");
+        this.player.giveChips(this.player.tmpRemovedChips*1.5);
+        // this.createMessage("You WON");
         this.animateChips(this.player);
       } else {
         this.player.giveChips(0);
-        this.createMessage("You LOOSE, too bad");
+        // this.createMessage("You Lost");
         this.animateChips(this.dealer);
       }
       this.updateChipsText();
@@ -258,9 +271,13 @@ export class Game {
     }
 
     dealCard(toPlayer: Player){
-      const card = this.deck.pop()
-      toPlayer.giveCards([card]);
-      this.addCardToDom(toPlayer, card);
+      if(this.deck.length>0) {
+        const card = this.deck.pop()
+        toPlayer.giveCards([card]);
+        this.addCardToDom(toPlayer, card);
+      } else {
+        this.createMessage("Deck is empty. You neede to hold your hand");
+      }
     }
 
     updatePlayerHands(){
@@ -285,7 +302,37 @@ export class Game {
         // use timeout to animate
         gameCardEl.setAttribute("style", `transform: translate(${0}px,${0}px); transition: all ${this.animationTime}ms ease-out;`);
       },75);
+      this.updateDomDeck();
     }
+
+    addDeckToDom(deck: Card[]){
+      let margin = -0.25;
+      let currentCardIndex = 0;
+      const addCardToDeck = (cardIndex: number, deck: Card[]) => {
+        setTimeout(()=> {
+          console.log("add card to deck", cardIndex);
+          const gameCardEl = document.createElement("game-card");
+          gameCardEl.setAttribute("class", "back-side");
+          gameCardEl.setAttribute("style", `position: absolute; border-radius: 4px; border: 1px solid black; margin: ${margin}px`);
+          // used to remove class because we want to use game-card selector for styling
+          gameCardEl.setAttribute("removewrapperclass", "true");
+          this.deckEl.appendChild(gameCardEl);
+          margin = margin- 0.25;
+          console.log("deck", deck);
+          if(cardIndex < deck.length) {
+            console.log("call it again");
+            addCardToDeck(++cardIndex, deck);
+          }
+        },10);
+      }
+      addCardToDeck(currentCardIndex, deck);
+    }
+    updateDomDeck(){
+      if(this.deckEl.lastChild) {
+        this.deckEl.lastChild.remove();
+      }
+    }
+
     addCardsToDom(){
       this.player.hand.forEach(card => {
         const gameCardEl = this.createGameCardEl(card, this.player);
@@ -329,7 +376,7 @@ export class Game {
     /**
      * The dealer and player gets two cards from the start
      */
-    dealStartHand(deck: Card[]){
+    dealStartHand(){
       let i = 0;
       const drawOrder = [this.player, this.dealer, this.player, this.dealer];
       
@@ -349,7 +396,7 @@ export class Game {
         setTimeout(() => {
             this.modalEl.classList.remove('open');
             this.modalEl.classList.add('close');
-        }, 3000);
+        }, 5000);
     }
     
     checkForSubscriber(){
