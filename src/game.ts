@@ -55,10 +55,17 @@ export class Game {
     }
 
     initNewGame(){
+      this.removeDeckFromDom();
       this.deck = createCardDeck();
       this.originalDeck = [...this.deck];
       shuffleDeck(this.deck);
       this.addDeckToDom(this.deck);
+    }
+
+    removeDeckFromDom(){
+      while (this.deckEl.firstChild) {
+        this.deckEl.removeChild(this.deckEl.firstChild);
+      }
     }
 
     addEventListeners(){
@@ -113,18 +120,18 @@ export class Game {
         this.createMessage("Time for a reshuffle");
         this.initNewGame();
       }
-        this.player.display404Cards = false;
-        this.dealer.display404Cards = false;
-        this.removeChipsFromDom();
-        this.removeCardsFromDom();
-        this.player.discardHand();
-        this.dealer.discardHand();
-        this.currentState = "start";
-        this.updatePlayersTotalSum();
-        this.dealStartHand();
-        this.updatePlayerHands();
-        this.updateButtonStates();
-        this.updateChipsText();
+      this.player.display404Cards = false;
+      this.dealer.display404Cards = false;
+      this.removeChipsFromDom();
+      this.removeCardsFromDom();
+      this.player.discardHand();
+      this.dealer.discardHand();
+      this.currentState = "start";
+      this.updatePlayersTotalSum();
+      this.dealStartHand();
+      this.updatePlayerHands();
+      this.updateButtonStates();
+      this.updateChipsText();
     }
 
     updateChipsText(){
