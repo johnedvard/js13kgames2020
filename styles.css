@@ -126,6 +126,12 @@ button {
 button:focus{
   outline: 0px;
 }
+button.menu-button{
+  border-radius: 0px;
+  width: auto;
+  height: 55px;
+  padding: 0px 20px;
+}
 #btnHit {
   background: white;
 }
@@ -172,13 +178,13 @@ button:focus{
 /* back-side is a class added to a Card to make sure we inherit the pattern class from the parent*/
 .pattern0 .back-side {
   background-color: white;
-  background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(200,0,0,.5) 5px, rgba(200,0,0,.5) 20px);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(200,0,0,1) 5px, rgba(200,0,0,1) 20px);
   background-repeat: repeat;
   width: 100%;
   height: 100%;
 }
 .pattern1 .back-side {
-  background-color:rgba(200,0,0,.5);
+  background-color:rgba(200,0,0,1);
   background-image: radial-gradient(white 15%, transparent 16%),
   radial-gradient(white 15%, transparent 16%);
   background-size: 60px 60px;
@@ -203,6 +209,19 @@ button:focus{
   background-size:10px 10px;
   width: 100%;
   height: 100%;
+}
+#cardSelector{
+  display: flex;
+  flex-flow: row;
+}
+#cardSelector div[class^="pattern"] {
+  width: 75px;
+}
+.arrow {
+  margin: 0px 15px;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bolder;
 }
 #game.subscriber {
   border-color: gold;
@@ -257,6 +276,7 @@ button:focus{
   z-index: 0;
   width: 0px;
   height: 0px;
+  transform: translateX(-400px);
 }
 #mainMenuContainer.close #mainMenu div{
   display: none;

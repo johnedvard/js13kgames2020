@@ -18,6 +18,9 @@ export class Game {
     menuEl: HTMLElement;
     mainMenuEl: HTMLElement;
     mainMenuContainerEl: HTMLElement;
+    selectNextPatternEl: HTMLElement;
+    selectPrevPatternEl: HTMLElement;
+    currentCardBackEl: HTMLElement;
     isSubscriber = false;
     deck: Card[];
     originalDeck: Card[];
@@ -25,6 +28,8 @@ export class Game {
     dealer: Player;
     isMenuOpen = false;
     animationTime = 400;
+    currentPatternIndex = 3;
+    patternClasses = ["pattern0", "pattern1", "pattern2", "pattern3"];
     // playStates: string[] = ["start", "betted", "betted2x", "hold", "playerEnd", "dealerEnd"];
     currentState = "start";
     constructor() {
@@ -47,6 +52,9 @@ export class Game {
         this.menuEl = document.getElementById('menu');
         this.mainMenuEl = document.getElementById('mainMenu');
         this.mainMenuContainerEl = document.getElementById('mainMenuContainer');
+        this.selectNextPatternEl = document.getElementById('selectNextPattern');
+        this.selectPrevPatternEl = document.getElementById('selectPrevPattern');
+        this.currentCardBackEl = document.getElementById('currentCardBack');
         this.initNewGame();
         this.dealStartHand();
         this.addEventListeners();
@@ -102,8 +110,26 @@ export class Game {
       this.menuEl.addEventListener("click", () => {
         this.toggleMenu();
       });
+      this.selectPrevPatternEl.addEventListener("click", () => {
+        this.selectCardBack(-1);
+      });
+      this.selectNextPatternEl.addEventListener("click", () => {
+        this.selectCardBack(1);
+      });
     }
 
+    selectCardBack(next: number){
+      this.deckEl.classList.remove(this.patternClasses[this.currentPatternIndex]);
+      this.currentCardBackEl.classList.remove(this.patternClasses[this.currentPatternIndex]);
+      this.currentPatternIndex = this.currentPatternIndex + next;
+      if(this.currentPatternIndex<0) {
+        this.currentPatternIndex = this.patternClasses.length-1;
+      } else if(this.currentPatternIndex>this.patternClasses.length-1) {
+        this.currentPatternIndex = 0;
+      }
+      this.deckEl.classList.add(this.patternClasses[this.currentPatternIndex]);
+      this.currentCardBackEl.classList.add(this.patternClasses[this.currentPatternIndex]);
+    }
     toggleMenu(){
       this.isMenuOpen = !this.isMenuOpen;
       if(this.isMenuOpen) {
