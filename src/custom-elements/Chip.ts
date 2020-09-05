@@ -41,7 +41,7 @@ export class Chip extends HTMLElement {
       color: white;
       font-size: 20px;
       font-weight: bold;
-      box-shadow: -1px 1px 2px 1px black;
+      box-shadow: -1px 1px 2px 1px rgba(0,0,0,0.8);
       background:
       radial-gradient(circle at 100% 50%, transparent 20%, rgba(255,255,255,.3) 21%, rgba(255,255,255,.3) 34%, transparent 35%, transparent),
       radial-gradient(circle at 0% 50%, transparent 20%, rgba(255,255,255,.3) 21%, rgba(255,255,255,.3) 34%, transparent 35%, transparent) 0 -50px;
