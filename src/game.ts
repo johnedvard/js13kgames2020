@@ -29,7 +29,7 @@ export class Game {
     isMenuOpen = false;
     animationTime = 400;
     currentPatternIndex = 3;
-    patternClasses = ["pattern0", "pattern1", "pattern2", "pattern3"];
+    patternClasses = ["pattern0", "pattern1", "pattern2", "pattern3", "pattern4", "pattern5"];
     // playStates: string[] = ["start", "betted", "betted2x", "hold", "playerEnd", "dealerEnd"];
     currentState = "start";
     constructor() {
@@ -321,7 +321,6 @@ export class Game {
     addCardToDom(toPlayer: Player, card: Card) {
       const gameCardEl = this.createGameCardEl(card, toPlayer);
       let playerEl = this.playerEl;
-      console.log("toPlayer", toPlayer);
       if(toPlayer.isDealer) {
         playerEl = this.dealerEl;
       }
@@ -343,7 +342,6 @@ export class Game {
       let currentCardIndex = 0;
       const addCardToDeck = (cardIndex: number, deck: Card[]) => {
         setTimeout(()=> {
-          console.log("add card to deck", cardIndex);
           const gameCardEl = document.createElement("game-card");
           gameCardEl.setAttribute("class", "back-side");
           gameCardEl.setAttribute("style", `position: absolute; border-radius: 4px; border: 1px solid black; margin: ${margin}px`);
@@ -351,9 +349,7 @@ export class Game {
           gameCardEl.setAttribute("removewrapperclass", "true");
           this.deckEl.appendChild(gameCardEl);
           margin = margin- 0.25;
-          console.log("deck", deck);
           if(cardIndex < deck.length) {
-            console.log("call it again");
             addCardToDeck(++cardIndex, deck);
           }
         },10);

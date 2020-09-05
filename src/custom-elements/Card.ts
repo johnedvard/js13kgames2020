@@ -29,7 +29,6 @@ export class Card extends HTMLElement {
   }
 
   updateStyle(attribute: string){
-    console.log("attribute", attribute);
     if(attribute === "face") {
       // this.faceElem.textContent = this.getAttribute(attribute);
     } else if(attribute === "value") {

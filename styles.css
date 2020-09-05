@@ -187,8 +187,8 @@ button.menu-button{
   background-color:rgba(200,0,0,1);
   background-image: radial-gradient(white 15%, transparent 16%),
   radial-gradient(white 15%, transparent 16%);
-  background-size: 60px 60px;
-  background-position: 0 0, 30px 30px;
+  background-size: 45px 45px;
+  background-position: 50px 5px, 30px 25px;
   width: 100%;
   height: 100%;
 }
@@ -207,6 +207,28 @@ button.menu-button{
   background-image: linear-gradient(90deg, rgba(200,0,0,.5) 50%, transparent 50%),
   linear-gradient(rgba(200,0,0,.5) 50%, transparent 50%);
   background-size:10px 10px;
+  width: 100%;
+  height: 100%;
+}
+.pattern4 .back-side {
+  background:
+  radial-gradient(black 15%, transparent 16%) 0 0,
+  radial-gradient(black 15%, transparent 16%) 8px 8px,
+  radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+  radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+  background-color:#282828;
+  background-size:16px 16px;
+  width: 100%;
+  height: 100%;
+}
+.pattern5 .back-side {
+  background-color: rgba(200,0,0,.5);
+  background-image:
+    repeating-linear-gradient(120deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 20px),
+    repeating-linear-gradient(60deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 20px),
+    linear-gradient(60deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1)),
+    linear-gradient(120deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1));
+  background-size: 75px 105px;
   width: 100%;
   height: 100%;
 }
