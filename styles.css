@@ -260,6 +260,9 @@ button.menu-button{
   cursor: pointer;
   font-size: 24px;
   font-weight: bolder;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 #game.subscriber {
   border-color: gold;
