@@ -120,7 +120,7 @@ game-chip.move-down{
   min-height: 100px;
 }
 #controls button{
-  margin-right: 20px;
+  margin: 0px 10px;
 }
 #gameFooter {
   grid-area: footer;
