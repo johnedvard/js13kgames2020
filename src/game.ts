@@ -240,12 +240,12 @@ export class Game {
       this.totalChipsContainerEl.appendChild(animateElement);
       setTimeout(()=> {
         // animate it
-        animateElement.setAttribute("style", `position: absolute; transform: translate(3px, -55px); color:${color}; transition: all 600ms ease-out; font-size: 20px;`)
+        animateElement.setAttribute("style", `position: absolute; transform: translate(3px, -55px); color:${color}; transition: all 800ms ease-out; font-size: 20px;`)
       },50)
       setTimeout(()=> {
         // remove animated text
         animateElement.remove();
-      },600)
+      }, 800);
     }
 
     animateChips(winningPlayer: Player){
