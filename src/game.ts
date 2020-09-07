@@ -147,9 +147,15 @@ export class Game {
       if(this.isMenuOpen) {
         this.mainMenuContainerEl.classList.remove("close");
         this.mainMenuContainerEl.classList.add("open");
+        this.menuEl.classList.remove("close");
+        this.menuEl.classList.add("open");
+        this.menuEl.textContent = "Close menu";
       } else {
         this.mainMenuContainerEl.classList.remove("open");
         this.mainMenuContainerEl.classList.add("close");
+        this.menuEl.classList.remove("open");
+        this.menuEl.classList.add("close");
+        this.menuEl.textContent = "Menu";
       }
     }
 

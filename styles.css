@@ -289,10 +289,13 @@ h4{
   cursor: pointer;
   z-index: 300;
 }
+#menu.open{
+  color: white;
+}
 #mainMenuBackdrop{
   position: absolute;
-  background-color:white;
-  opacity: 0.8;
+  background-color:black;
+  opacity: 0.9;
 }
 #mainMenuContainer.open #mainMenuBackdrop {
   height: 100%;
@@ -314,6 +317,7 @@ h4{
   width: 100vw;
   height: 100%;
   font-size: 24px;
+  color: white;
 }
 #mainMenu div, #mainMenu h4 {
   margin-bottom: 20px;
