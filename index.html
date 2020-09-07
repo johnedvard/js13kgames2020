@@ -12,12 +12,14 @@
       <div id="mainMenuBackdrop">
       </div>
       <div id="mainMenu">
-        <button type="button" class="menu-button"> New game (get your starting money back) </button>
-        <h4> Subscribe to enjoy the below bonuses </h4>
+        <button id="newGameBtn" type="button" class="menu-button"> New game (start with 110 chips) </button>
+        <h4><a href="https://coil.com/">Become a subscriber</a> to enjoy the below bonuses </h4>
+        <div class="hr"></div>
+        <div>Select Card Back</div>
         <div id="cardSelector">
-          <button id="selectPrevPattern" type="button" class="arrow"> < </button>
+          <button id="selectPrevPattern" disabled type="button" class="arrow"> < </button>
           <div id="currentCardBack" class="pattern3"> <div class="back-side"></div></div>
-          <button id="selectNextPattern" type="button" class="arrow"> > </button>
+          <button id="selectNextPattern" disabled type="button" class="arrow"> > </button>
         </div>
       </div>
     </div>
@@ -40,7 +42,7 @@
         <button id="btnNext" type="button"> Next </button>
       </div>
       <div id="gameFooter">
-        <div class="chips-left"> Chips <span id="totalChips"> </span></div>
+        <div id="totalChipsContainer" style="position: relative;"> Chips <span id="totalChips"> </span></div>
       </div>
       <div id="modal" class="modal close">
         Init

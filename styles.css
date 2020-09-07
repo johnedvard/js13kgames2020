@@ -42,6 +42,13 @@ body{
     transform: translateY(300%);
 }
 
+div.hr {
+  width: 80%;
+  height: 1px;
+  background-color: #0000002e;
+  margin: 0px 0px 15px 0px;
+}
+
 #game {
     display: grid;
     width: 100%;
@@ -78,7 +85,10 @@ body{
   align-items: flex-end;
   grid-area: player;
 }
-
+a{
+  text-decoration: none;
+  color: #5461ff;
+}
 game-chip{
   z-index: 100;
   position:absolute;
@@ -126,7 +136,11 @@ button {
 button:focus{
   outline: 0px;
 }
+button:disabled {
+  cursor: not-allowed;
+}
 button.menu-button{
+  font-size: 16px;
   border-radius: 0px;
   width: auto;
   height: 55px;
@@ -248,7 +262,9 @@ button.menu-button{
 #game.subscriber {
   border-color: gold;
 }
-
+h4{
+  margin: 15px 0px 0px 0px;
+}
 .game-info{
     position: absolute;
     display: flex;
@@ -270,7 +286,7 @@ button.menu-button{
 #mainMenuBackdrop{
   position: absolute;
   background-color:white;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 #mainMenuContainer.open #mainMenuBackdrop {
   height: 100%;
