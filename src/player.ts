@@ -8,7 +8,7 @@ export class Player {
   display404Cards = false;
   constructor(isDealer = false) {
     this.isDealer = isDealer;
-    this.totalChips = 110;
+    this.totalChips = parseInt(localStorage.getItem("jer-chips")) || 110;
   }
   giveCards(cards: Card[]) {
     cards.forEach(c => this.hand.push(c));
@@ -17,6 +17,7 @@ export class Player {
   removeChips(chips: number){
     this.tmpRemovedChips += chips;
     this.totalChips -= chips;
+    localStorage.setItem("jer-chips", ""+this.totalChips);
   }
   giveChips(chips: number){
     this.tmpRemovedChips = 0;

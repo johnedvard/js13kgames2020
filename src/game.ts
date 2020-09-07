@@ -21,6 +21,8 @@ export class Game {
     selectNextPatternEl: HTMLElement;
     selectPrevPatternEl: HTMLElement;
     currentCardBackEl: HTMLElement;
+    newGameBtnEl: HTMLElement;
+    totalChipsContainerEl: HTMLElement;
     isSubscriber = false;
     deck: Card[];
     originalDeck: Card[];
@@ -29,13 +31,13 @@ export class Game {
     isMenuOpen = false;
     animationTime = 400;
     currentPatternIndex = 3;
+    debugSubscriber = false;
     patternClasses = ["pattern0", "pattern1", "pattern2", "pattern3", "pattern4", "pattern5"];
     // playStates: string[] = ["start", "betted", "betted2x", "hold", "playerEnd", "dealerEnd"];
     currentState = "start";
     constructor() {
         this.player = new Player(false);
-        this.dealer = new Player(true);
-        this.checkForSubscriber();
+        this.dealer = new Player(true);        
         this.modalEl = document.getElementById('modal');
         this.gameEl = document.getElementById('game');
         this.dealerEl = document.getElementById('dealer');
@@ -55,11 +57,14 @@ export class Game {
         this.selectNextPatternEl = document.getElementById('selectNextPattern');
         this.selectPrevPatternEl = document.getElementById('selectPrevPattern');
         this.currentCardBackEl = document.getElementById('currentCardBack');
+        this.newGameBtnEl = document.getElementById('newGameBtn');
+        this.totalChipsContainerEl = document.getElementById('totalChipsContainer');
         this.initNewGame();
         this.dealStartHand();
         this.addEventListeners();
         this.updateButtonStates();
         this.updateChipsText();
+        this.checkForSubscriber();
     }
 
     initNewGame(){
@@ -98,6 +103,7 @@ export class Game {
           }
           this.betzoneEl.appendChild(document.createElement("game-chip", {}));
           this.player.removeChips(10);
+          this.animateWinnings(-10);
           this.updateButtonStates();
           this.updateChipsText();
         } else {
@@ -115,6 +121,12 @@ export class Game {
       });
       this.selectNextPatternEl.addEventListener("click", () => {
         this.selectCardBack(1);
+      });
+      this.newGameBtnEl.addEventListener("click", () => {
+        localStorage.setItem("jer-chips", "110");
+        this.player.totalChips = 110;
+        this.startNextRound(true);
+        this.toggleMenu();
       });
     }
 
@@ -141,8 +153,8 @@ export class Game {
       }
     }
 
-    startNextRound(){
-      if(this.deck.length <= 10) {
+    startNextRound(reshuffle = false){
+      if(this.deck.length <= 10 || reshuffle) {
         this.createMessage("Time for a reshuffle");
         this.initNewGame();
       }
@@ -162,6 +174,7 @@ export class Game {
 
     updateChipsText(){
       this.totalChipsEl.textContent = ""+this.player.totalChips;
+      localStorage.setItem("jer-chips", ""+this.player.totalChips);
     }
 
     updateButtonStates(){
@@ -201,9 +214,11 @@ export class Game {
         }
       }
       if(totalSumPlayer === totalSumDealer) {
+        this.animateWinnings(this.player.tmpRemovedChips);
         this.player.giveChips(this.player.tmpRemovedChips);
         this.createMessage("It is a DRAW");
       } else if(youWin) {
+        this.animateWinnings(this.player.tmpRemovedChips*1.5);
         this.player.giveChips(this.player.tmpRemovedChips*1.5);
         // this.createMessage("You WON");
         this.animateChips(this.player);
@@ -213,6 +228,24 @@ export class Game {
         this.animateChips(this.dealer);
       }
       this.updateChipsText();
+    }
+
+    animateWinnings(sum: number){
+      const animateElement = document.createElement("div");
+      const sumEl = document.createElement("span");
+      sumEl.textContent = (sum>0 ? "+" : "") + sum;
+      const color = sum>0 ? "green" : "red";
+      animateElement.setAttribute("style", `position: absolute; transform: translate(3px, -20px);`)
+      animateElement.appendChild(sumEl);
+      this.totalChipsContainerEl.appendChild(animateElement);
+      setTimeout(()=> {
+        // animate it
+        animateElement.setAttribute("style", `position: absolute; transform: translate(3px, -55px); color:${color}; transition: all 600ms ease-out; font-size: 20px;`)
+      },50)
+      setTimeout(()=> {
+        // remove animated text
+        animateElement.remove();
+      },600)
     }
 
     animateChips(winningPlayer: Player){
@@ -344,7 +377,7 @@ export class Game {
         setTimeout(()=> {
           const gameCardEl = document.createElement("game-card");
           gameCardEl.setAttribute("class", "back-side");
-          gameCardEl.setAttribute("style", `position: absolute; border-radius: 4px; border: 1px solid black; margin: ${margin}px`);
+          gameCardEl.setAttribute("style", `position: absolute; border-radius: 4px; border: 1px solid white; margin: ${margin}px; box-shadow: -1px 1px 2px -1px rgba(0,0,0,.1), -1px 1px 3px 0 rgba(0,0,0,.1)`);
           // used to remove class because we want to use game-card selector for styling
           gameCardEl.setAttribute("removewrapperclass", "true");
           this.deckEl.appendChild(gameCardEl);
@@ -429,11 +462,23 @@ export class Game {
     }
     
     checkForSubscriber(){
+        const setSubscriber = () => {
+          this.createMessage('Thanks for subscribing!');
+          document.getElementById('game').classList.add('subscriber');
+          this.selectNextPatternEl.removeAttribute("disabled");
+          this.selectPrevPatternEl.removeAttribute("disabled");
+          const removeIfSubscriberELements = document.querySelectorAll('[removeIfSubscriber]');
+          for(let el of removeIfSubscriberELements) {
+            el.remove();
+          }
+        }
         const monetization: any = (<any>document).monetization;
+        if(this.debugSubscriber) {
+          setSubscriber();
+        }
         setTimeout(()=> {
             if (monetization && monetization.state === 'started') { 
-                this.createMessage('Hello Subscriber!');
-                document.getElementById('game').classList.add('subscriber');
+                setSubscriber()
             }
         });
     }

@@ -57,7 +57,7 @@ export class Card extends HTMLElement {
       height: 105px;
       width: 75px;
       border-radius: var(--card-radius);
-      border: 1px solid black;
+      border: 1px solid white;
       box-shadow: -1px 3px 1px -2px rgba(0,0,0,.2), -1px 2px 2px 0 rgba(0,0,0,.14), -1px 1px 5px 0 rgba(0,0,0,.12);
       background-color: white;
       font-size: 16px;
