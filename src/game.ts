@@ -131,7 +131,9 @@ export class Game {
     }
 
     selectCardBack(next: number){
-      this.deckEl.classList.remove(this.patternClasses[this.currentPatternIndex]);
+      if(this.isSubscriber) {
+        this.deckEl.classList.remove(this.patternClasses[this.currentPatternIndex]);
+      }
       this.currentCardBackEl.classList.remove(this.patternClasses[this.currentPatternIndex]);
       this.currentPatternIndex = this.currentPatternIndex + next;
       if(this.currentPatternIndex<0) {
@@ -139,7 +141,9 @@ export class Game {
       } else if(this.currentPatternIndex>this.patternClasses.length-1) {
         this.currentPatternIndex = 0;
       }
-      this.deckEl.classList.add(this.patternClasses[this.currentPatternIndex]);
+      if(this.isSubscriber) {
+        this.deckEl.classList.add(this.patternClasses[this.currentPatternIndex]);
+      }
       this.currentCardBackEl.classList.add(this.patternClasses[this.currentPatternIndex]);
     }
     toggleMenu(){
