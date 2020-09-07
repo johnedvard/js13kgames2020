@@ -114,12 +114,13 @@ game-chip.move-down{
   position: relative;
   display: flex;
   justify-content: center;
-  gap: 20px;
   align-items: center;
   width: 100%;
   grid-area: controls;
-  /* grid-column: 2; */
   min-height: 100px;
+}
+#controls button{
+  margin-right: 20px;
 }
 #gameFooter {
   grid-area: footer;
@@ -310,7 +311,9 @@ h4{
   width: 100vw;
   height: 100%;
   font-size: 24px;
-  gap: 20px;  
+}
+#mainMenu div, #mainMenu h4 {
+  margin-bottom: 20px;
 }
 #mainMenuContainer.close #mainMenu {
   z-index: 0;
