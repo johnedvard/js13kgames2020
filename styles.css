@@ -103,11 +103,11 @@ game-chip.move-down{
 }
 
 #player game-card:nth-child(n) {
-  margin-right: -50px;
+  margin-right: -45px;
 }
 
 #dealer game-card:nth-child(n) {
-  margin-right: -50px;
+  margin-right: -45px;
 }
 
 #controls {
