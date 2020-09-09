@@ -303,9 +303,12 @@ export class Game {
     checkIfDealerShouldDrawCard(){
       const totalSumPlayer = this.getTotalValue(this.player);
       const totalGuessedSumDealer = this.getGuessedTotalValue(this.dealerEl);
+      const knownSumDealer = this.getGuessedTotalValue(this.dealerEl, true);
       if(totalSumPlayer > 21){
         return false;
-      } else if(totalGuessedSumDealer < 21 && totalGuessedSumDealer < totalSumPlayer) {
+      } else if(knownSumDealer > totalSumPlayer){
+        return false;
+      }else if(totalGuessedSumDealer < 21 && totalGuessedSumDealer <= totalSumPlayer) {
         return true;
       }
       return false;
@@ -334,13 +337,13 @@ export class Game {
       }
     }
 
-    getGuessedTotalValue(aPlayerEl: HTMLElement) {
+    getGuessedTotalValue(aPlayerEl: HTMLElement, onlyKnownCards = false) {
       let res = 0;
       aPlayerEl.childNodes.forEach(gameCardEl => {
         const cardValue = (<HTMLElement>gameCardEl).getAttribute("value")
-        if(cardValue != "404") {
-          res += parseInt(cardValue);
-        }else{
+        if(cardValue != "404") { 
+            res += parseInt(cardValue);
+        }else if(!onlyKnownCards){
           // guess the value in the 404 card, random value between 1 and 10
           res += Math.floor(Math.random() * 10)+1;
         }
