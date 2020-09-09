@@ -4,8 +4,7 @@ export class Music {
   bassSequence: TinyMusic.Sequence;
   sequence: TinyMusic.Sequence;
   isPlaying = false;
-  playMusic = () => {
-    // create a new Web Audio API context
+  constructor() {
     var ac: AudioContext = new AudioContext();
         
     // set the playback tempo (120 beats per minute)
@@ -19,8 +18,6 @@ export class Music {
       'G2 q', '- e', 'G2 e', 'E2 q', '- e', 'E2 e', 'F2 q', '- e', 'E2 e', 'E2 q', 'C2 q',
       'F2 q', '- e', 'F2 e', 'E2 q', '- e', 'E2 e', 'F2 q', '- e', 'E2 e', 'E2 q', 'C2 q',
     ];
-    const bassOsc = ac.createOscillator(); 
-    bassOsc.type = 'square';
     // create a new sequence
     this.sequence = new TinyMusic.Sequence( ac, tempo );
     this.bassSequence = new TinyMusic.Sequence( ac, tempo );
@@ -39,10 +36,10 @@ export class Music {
     // disable looping
     sequence.loop = true;
     bassSequence.loop = true;
-  
-    // play it
-    sequence.play();
-    bassSequence.play();
+  }
+  playMusic = () => {
+    this.sequence.play();
+    this.bassSequence.play();
     this.isPlaying = true;
   }
   stopMusic = () => {

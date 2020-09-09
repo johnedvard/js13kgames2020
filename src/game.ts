@@ -2,6 +2,7 @@ import { createCardDeck, shuffleDeck } from './cardUtils';
 import { Card } from './Icard';
 import { Player } from './player';
 import { Music } from './music';
+import { SFX } from './sfx';
 export class Game {
     modalEl: HTMLElement;
     gameEl: HTMLElement;
@@ -27,6 +28,7 @@ export class Game {
     toggleMusicBtnEl: HTMLElement;
     isSubscriber = false;
     music: Music;
+    sfx: SFX;
     deck: Card[];
     originalDeck: Card[];
     player: Player;
@@ -70,8 +72,9 @@ export class Game {
         this.updateChipsText();
         this.checkForSubscriber();
         this.music = new Music();
+        this.sfx = new SFX();
         setTimeout(()=>{
-          this.music.playMusic();
+          // this.music.playMusic();
         });
     }
 
@@ -112,6 +115,7 @@ export class Game {
           this.betzoneEl.appendChild(document.createElement("game-chip", {}));
           this.player.removeChips(10);
           this.animateWinnings(-10);
+          this.sfx.playBetSound();
           this.updateButtonStates();
           this.updateChipsText();
         } else {
