@@ -11,7 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "audio": "^1.2.0"
+    "audio": "^1.2.0",
+    "tinymusic": "^1.0.0"
   },
   "devDependencies": {
     "parcel": "^1.12.3",

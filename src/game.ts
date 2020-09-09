@@ -1,6 +1,7 @@
 import { createCardDeck, shuffleDeck } from './cardUtils';
 import { Card } from './Icard';
 import { Player } from './player';
+import { Music } from './music';
 export class Game {
     modalEl: HTMLElement;
     gameEl: HTMLElement;
@@ -23,7 +24,9 @@ export class Game {
     currentCardBackEl: HTMLElement;
     newGameBtnEl: HTMLElement;
     totalChipsContainerEl: HTMLElement;
+    toggleMusicBtnEl: HTMLElement;
     isSubscriber = false;
+    music: Music;
     deck: Card[];
     originalDeck: Card[];
     player: Player;
@@ -59,12 +62,17 @@ export class Game {
         this.currentCardBackEl = document.getElementById('currentCardBack');
         this.newGameBtnEl = document.getElementById('newGameBtn');
         this.totalChipsContainerEl = document.getElementById('totalChipsContainer');
+        this.toggleMusicBtnEl = document.getElementById('toggleMusicBtn');
         this.initNewGame();
         this.dealStartHand();
         this.addEventListeners();
         this.updateButtonStates();
         this.updateChipsText();
         this.checkForSubscriber();
+        this.music = new Music();
+        setTimeout(()=>{
+          this.music.playMusic();
+        });
     }
 
     initNewGame(){
@@ -127,6 +135,9 @@ export class Game {
         this.player.totalChips = 110;
         this.startNextRound(true);
         this.toggleMenu();
+      });
+      this.toggleMusicBtnEl.addEventListener("click", () => {
+        this.music.toggleMusic();
       });
     }
 
@@ -461,13 +472,22 @@ export class Game {
     }
     
     createMessage(msg: string){
-        const modalChild = this.modalEl.childNodes[0];
-        this.modalEl.classList.add('open');
-        this.modalEl.classList.remove('close');
-        this.modalEl.replaceChild(document.createTextNode(msg), modalChild);
+        const modalSpawnEL = document.getElementById("modalSpawn");
+        const modalParent = document.createElement("div");
+        modalParent.setAttribute("id", "modal");
+        modalParent.setAttribute("class", "modal close");
+        modalParent.appendChild(document.createTextNode(msg));
+        modalSpawnEL.appendChild(modalParent);
+        setTimeout(()=>{
+          modalParent.classList.add('open');
+          modalParent.classList.remove('close');
+        });
         setTimeout(() => {
-            this.modalEl.classList.remove('open');
-            this.modalEl.classList.add('close');
+            modalParent.classList.remove('open');
+            modalParent.classList.add('close');
+            setTimeout(()=> {
+              modalParent.remove();
+            }, 450) // see styles.css for animation time
         }, 5000);
     }
     
