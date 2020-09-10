@@ -42,7 +42,16 @@ export class Game {
     currentState = "start";
     constructor() {
         this.player = new Player(false);
-        this.dealer = new Player(true);        
+        this.dealer = new Player(true);
+        this.sfx = new SFX();
+        this.music = new Music();
+        setTimeout(()=> {
+          this.initNewGame();
+          this.dealStartHand();
+          this.updateChipsText();
+          this.checkForSubscriber();
+          this.music.playMusic();
+        },100);
         this.modalEl = document.getElementById('modal');
         this.gameEl = document.getElementById('game');
         this.dealerEl = document.getElementById('dealer');
@@ -65,24 +74,15 @@ export class Game {
         this.newGameBtnEl = document.getElementById('newGameBtn');
         this.totalChipsContainerEl = document.getElementById('totalChipsContainer');
         this.toggleMusicBtnEl = document.getElementById('toggleMusicBtn');
-        this.initNewGame();
-        this.dealStartHand();
         this.addEventListeners();
         this.updateButtonStates();
-        this.updateChipsText();
-        this.checkForSubscriber();
-        this.music = new Music();
-        this.sfx = new SFX();
-        setTimeout(()=>{
-          // this.music.playMusic();
-        });
     }
 
     initNewGame(){
       this.removeDeckFromDom();
       this.deck = createCardDeck();
       this.originalDeck = [...this.deck];
-      shuffleDeck(this.deck);
+      shuffleDeck(this.deck, this.sfx);
       this.addDeckToDom(this.deck);
     }
 
@@ -242,14 +242,17 @@ export class Game {
         this.animateWinnings(this.player.tmpRemovedChips);
         this.player.giveChips(this.player.tmpRemovedChips);
         this.createMessage("It is a DRAW");
+        this.sfx.playDrawSound();
       } else if(youWin) {
         this.animateWinnings(this.player.tmpRemovedChips*1.5);
         this.player.giveChips(this.player.tmpRemovedChips*1.5);
         // this.createMessage("You WON");
         this.animateChips(this.player);
+        this.sfx.playWinRoutine();
       } else {
         this.player.giveChips(0);
         // this.createMessage("You Lost");
+        this.sfx.playLooseSound();
         this.animateChips(this.dealer);
       }
       this.updateChipsText();
@@ -369,6 +372,7 @@ export class Game {
         const card = this.deck.pop()
         toPlayer.giveCards([card]);
         this.addCardToDom(toPlayer, card);
+        this.sfx.playHit();
       } else {
         this.createMessage("Deck is empty. You neede to hold your hand");
       }

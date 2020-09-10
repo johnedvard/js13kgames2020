@@ -1,20 +1,49 @@
-import * as TinyMusic from '../node_modules/tinymusic/dist/TinyMusic.js';
+import {zzfx} from './assets/ZzFX';
 
 export class SFX {
-  betSequence: TinyMusic.Sequence;
+
+  blingbling = [.5,,304,.1,.3,,5,.1,-46,,,,,,-165];
+  swosh = [,,150,.05,,.05,,1.3,,,,,,3];
+  moneyInTheBank = [,,1675,,.06,.24,1,1.82,,,837,.06];
+  buhu = [,,925,.04,.3,.6,1,.3,,6.27,-184,.09,.17];
+  hmmm = [,,461,.08,.27,.43,1,1.22,,,22,.04,.18,,,,,.53,.03,.33];
+  shuffle = [,,200,.2,.3,.01,4,.44,-71,-66,70,.02,.07,,.2,.1,.26,.41,,.66];
+  
   constructor(){
-    var ac = typeof AudioContext !== 'undefined' ? new AudioContext : (new (<any>window).webkitAudioContext);
-    var tempo = 120;
-    this.betSequence = new TinyMusic.Sequence( ac, tempo );
-    this.betSequence.context._context.resume();
-    this.betSequence.gain.gain.value = 0.1;
-    this.betSequence.loop = false;
-    // Trumpety
-    this.betSequence.createCustomWave([-1,-0.9,-0.6,-0.3, 0, 0.3, 0.6, 0.9,1]);
-    this.betSequence.push("E4 e");
+    
+  }
+  private playWin(){
+    zzfx(...this.moneyInTheBank);
   }
 
   playBetSound() {
-    // this.betSequence.play();
+    zzfx(...this.blingbling);
+  }
+
+  playHit(){
+    zzfx(...this.swosh);
+  }
+  
+  playLooseSound(){
+    zzfx(...this.buhu);
+  }
+  
+  playDrawSound(){
+    zzfx(...this.hmmm);
+  }
+
+  playShuffleSound(){
+    zzfx(...this.shuffle);
+  }
+  playWinRoutine(){
+    this.playWin();
+    let winSoundsPlayed = 0;
+    const winInterval = setInterval(()=>{
+      winSoundsPlayed ++;
+      if(winSoundsPlayed >= 4) {
+        clearInterval(winInterval);
+      }
+      this.playWin();
+    },120);
   }
 }
