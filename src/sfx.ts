@@ -3,11 +3,10 @@ import * as TinyMusic from '../node_modules/tinymusic/dist/TinyMusic.js';
 export class SFX {
   betSequence: TinyMusic.Sequence;
   constructor(){
-    var ac: AudioContext = window.AudioContext // Default
-      || (<any>window).webkitAudioContext // Safari and old versions of Chrome
-      || false; 
+    var ac = typeof AudioContext !== 'undefined' ? new AudioContext : (new (<any>window).webkitAudioContext);
     var tempo = 120;
     this.betSequence = new TinyMusic.Sequence( ac, tempo );
+    this.betSequence.context._context.resume();
     this.betSequence.gain.gain.value = 0.1;
     this.betSequence.loop = false;
     // Trumpety
@@ -16,6 +15,6 @@ export class SFX {
   }
 
   playBetSound() {
-    this.betSequence.play();
+    // this.betSequence.play();
   }
 }

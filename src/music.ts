@@ -5,14 +5,11 @@ export class Music {
   sequence: TinyMusic.Sequence;
   isPlaying = false;
   constructor() {
-    var ac: AudioContext = window.AudioContext // Default
-      || (<any>window).webkitAudioContext // Safari and old versions of Chrome
-      || false; 
-        
+    var ac = typeof AudioContext !== 'undefined' ? new AudioContext : (new (<any>window).webkitAudioContext);
     // set the playback tempo (120 beats per minute)
     var tempo = 120;
-    // create some notes ('<Note Name> <Beat Length>')
-    // q = quarter note, h = half note (more on that later)
+    // // create some notes ('<Note Name> <Beat Length>')
+    // // q = quarter note, h = half note (more on that later)
     const melodyNotes = [
       'B5 e', 'B5 e', 'C6 e', 'D6 h', 'C6 e', 'C6 e', 'B5 q', 'G5 h', '- e', 
       'A5 e', 'A5 e', 'G5 e', 'B5 h', 'F5 e', 'F5 e', 'E5 q', 'G5 h', '- e'
