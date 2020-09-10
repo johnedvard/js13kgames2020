@@ -74,7 +74,7 @@ export class Game {
         this.music = new Music();
         this.sfx = new SFX();
         setTimeout(()=>{
-          // this.music.playMusic();
+          this.music.playMusic();
         });
     }
 

@@ -12,6 +12,8 @@ export class Music {
     // create some notes ('<Note Name> <Beat Length>')
     // q = quarter note, h = half note (more on that later)
     const melodyNotes = [
+      'B5 e', 'B5 e', 'C6 e', 'D6 h', 'C6 e', 'C6 e', 'B5 q', 'G5 h', '- e', 
+      'A5 e', 'A5 e', 'G5 e', 'B5 h', 'F5 e', 'F5 e', 'E5 q', 'G5 h', '- e'
       
     ];
     const bassNotes = [
@@ -24,10 +26,12 @@ export class Music {
     const sequence = this.sequence;
     const bassSequence = this.bassSequence;
     sequence.createCustomWave([-0.8, 1, 0.8, 0.8, -0.8, -0.8, -1]);
+    sequence.staccato = 0.3;
+    sequence.smoothing = 0;
     bassSequence.staccato = 0.1;
     bassSequence.smoothing = 0.1;
-    sequence.gain.gain.value = 0.05;
-    bassSequence.gain.gain.value = 0.05;
+    sequence.gain.gain.value = 0.03;
+    bassSequence.gain.gain.value = 0.03;
   
     // add the notes
     sequence.push( ...melodyNotes );
