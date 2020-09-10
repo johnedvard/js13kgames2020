@@ -5,7 +5,9 @@ export class Music {
   sequence: TinyMusic.Sequence;
   isPlaying = false;
   constructor() {
-    var ac: AudioContext = new AudioContext();
+    var ac: AudioContext = window.AudioContext // Default
+      || (<any>window).webkitAudioContext // Safari and old versions of Chrome
+      || false; 
         
     // set the playback tempo (120 beats per minute)
     var tempo = 120;

@@ -3,7 +3,9 @@ import * as TinyMusic from '../node_modules/tinymusic/dist/TinyMusic.js';
 export class SFX {
   betSequence: TinyMusic.Sequence;
   constructor(){
-    var ac: AudioContext = new AudioContext();
+    var ac: AudioContext = window.AudioContext // Default
+      || (<any>window).webkitAudioContext // Safari and old versions of Chrome
+      || false; 
     var tempo = 120;
     this.betSequence = new TinyMusic.Sequence( ac, tempo );
     this.betSequence.gain.gain.value = 0.1;
