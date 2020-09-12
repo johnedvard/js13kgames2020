@@ -26,6 +26,9 @@ export class Player {
   discardHand(){
     this._hand = [];
   }
+  giveSubscriptionChips(chips: number) {
+    this.totalChips += chips;
+  }
   get hand(): Card[] {
     return this._hand;
   }

@@ -26,6 +26,7 @@ export class Game {
     newGameBtnEl: HTMLElement;
     totalChipsContainerEl: HTMLElement;
     toggleMusicEl: HTMLElement;
+    betzoneProgressBarEl: HTMLElement;
     isSubscriber = false;
     music: Music;
     sfx: SFX;
@@ -37,6 +38,7 @@ export class Game {
     animationTime = 400;
     currentPatternIndex = 3;
     debugSubscriber = false;
+    progressPoints = 0;
     patternClasses = ["pattern0", "pattern1", "pattern2", "pattern3", "pattern4", "pattern5"];
     // playStates: string[] = ["start", "betted", "betted2x", "hold", "playerEnd", "dealerEnd"];
     currentState = "start";
@@ -74,6 +76,7 @@ export class Game {
         this.newGameBtnEl = document.getElementById('newGameBtn');
         this.totalChipsContainerEl = document.getElementById('totalChipsContainer');
         this.toggleMusicEl = document.getElementById('toggleMusic');
+        this.betzoneProgressBarEl = document.getElementById('betzoneProgressBar');
         this.addEventListeners();
         this.updateButtonStates();
     }
@@ -462,7 +465,8 @@ export class Game {
 
     removeChipsFromDom(){
       while (this.betzoneEl.lastChild) {
-        if((<HTMLElement>this.betzoneEl.lastChild).classList.contains("txt-betzone")){
+        const child = (<HTMLElement>this.betzoneEl.lastChild);
+        if(child.classList && child.classList.contains("txt-betzone")){
           return;
         }
         this.betzoneEl.removeChild(this.betzoneEl.lastChild);
@@ -515,25 +519,54 @@ export class Game {
         }, 5000);
     }
     
-    checkForSubscriber(){
-        const setSubscriber = () => {
-          this.createMessage('Thanks for subscribing!');
-          document.getElementById('game').classList.add('subscriber');
-          this.selectNextPatternEl.removeAttribute("disabled");
-          this.selectPrevPatternEl.removeAttribute("disabled");
-          const removeIfSubscriberELements = document.querySelectorAll('[removeIfSubscriber]');
-          for(let el of removeIfSubscriberELements) {
-            el.remove();
-          }
+    setSubscriber = () => {
+      if(!this.isSubscriber) {
+        this.createMessage('Thanks for subscribing!');
+        document.getElementById('game').classList.add('subscriber');
+        this.selectNextPatternEl.removeAttribute("disabled");
+        this.selectPrevPatternEl.removeAttribute("disabled");
+        const removeIfSubscriberELements = document.querySelectorAll('[removeIfSubscriber]');
+        for(let el of removeIfSubscriberELements) {
+          el.remove();
         }
+      }
+      this.isSubscriber = true;
+    }
+
+    checkForSubscriber(){
         const monetization: any = (<any>document).monetization;
         if(this.debugSubscriber) {
-          setSubscriber();
+          this.setSubscriber();
+          setInterval(()=>{
+            this.coinSubscriptionRoutine();
+          },200);
         }
         setTimeout(()=> {
-            if (monetization && monetization.state === 'started') { 
-                setSubscriber()
-            }
+          if (monetization && monetization.state === 'started') { 
+            this.setSubscriber();
+          }
         });
+        monetization.addEventListener('monetizationstart', () => {
+          if (monetization && monetization.state === 'started') { 
+            this.setSubscriber();
+          }
+        });
+        monetization.addEventListener('monetizationprogress', () => {
+          this.coinSubscriptionRoutine();
+        });
+    }
+    coinSubscriptionRoutine(){
+      if(!this.isSubscriber) {
+        this.setSubscriber();
+      }          
+      this.progressPoints+=0.05;
+      if(this.progressPoints >= 77) {
+        this.progressPoints = 0;
+        this.player.giveSubscriptionChips(10);
+        this.animateWinnings(10);
+        this.updateChipsText();
+        this.sfx.playSubscriptionCoin();
+      }
+      this.betzoneProgressBarEl.style.height = this.progressPoints+"px";
     }
 }

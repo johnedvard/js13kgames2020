@@ -46,4 +46,7 @@ export class SFX {
       this.playWin();
     },120);
   }
+  playSubscriptionCoin(){
+    this.playWin();
+  }
 }
