@@ -133,7 +133,6 @@ button {
   border-radius: 50%;
   background: white;
 }
-
 button:focus{
   outline: 0px;
 }
@@ -143,9 +142,10 @@ button:disabled {
 button.menu-button{
   font-size: 16px;
   border-radius: 0px;
-  width: auto;
+  width: 200px;
   height: 55px;
   padding: 0px 20px;
+  margin: 5px 0px;
 }
 #btnHit {
   background: white;
@@ -250,6 +250,7 @@ button.menu-button{
 #cardSelector{
   display: flex;
   flex-flow: row;
+  margin: 10px;
 }
 #cardSelector div[class^="pattern"] {
   width: 75px;
@@ -268,7 +269,7 @@ button.menu-button{
   border-color: gold;
 }
 h4{
-  margin: 15px 0px 0px 0px;
+  margin: 40px 0px 20px 0px;
   text-align: center;
 }
 .game-info{
@@ -281,6 +282,9 @@ h4{
     margin-right: 30px;
     justify-content: flex-end;
     align-items: center;
+}
+#toggleMusic{
+  margin-right: 20px;
 }
 #menu{
   position: relative;
@@ -318,9 +322,6 @@ h4{
   height: 100%;
   font-size: 24px;
   color: white;
-}
-#mainMenu div, #mainMenu h4 {
-  margin-bottom: 20px;
 }
 #mainMenuContainer.close #mainMenu {
   z-index: 0;

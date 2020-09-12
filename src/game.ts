@@ -25,7 +25,7 @@ export class Game {
     currentCardBackEl: HTMLElement;
     newGameBtnEl: HTMLElement;
     totalChipsContainerEl: HTMLElement;
-    toggleMusicBtnEl: HTMLElement;
+    toggleMusicEl: HTMLElement;
     isSubscriber = false;
     music: Music;
     sfx: SFX;
@@ -45,12 +45,12 @@ export class Game {
         this.dealer = new Player(true);
         this.sfx = new SFX();
         this.music = new Music();
+        // TODO (johnedvard) create a start game button, so we can play music
         setTimeout(()=> {
           this.initNewGame();
           this.dealStartHand();
           this.updateChipsText();
           this.checkForSubscriber();
-          this.music.playMusic();
         },100);
         this.modalEl = document.getElementById('modal');
         this.gameEl = document.getElementById('game');
@@ -73,7 +73,7 @@ export class Game {
         this.currentCardBackEl = document.getElementById('currentCardBack');
         this.newGameBtnEl = document.getElementById('newGameBtn');
         this.totalChipsContainerEl = document.getElementById('totalChipsContainer');
-        this.toggleMusicBtnEl = document.getElementById('toggleMusicBtn');
+        this.toggleMusicEl = document.getElementById('toggleMusic');
         this.addEventListeners();
         this.updateButtonStates();
     }
@@ -140,7 +140,14 @@ export class Game {
         this.startNextRound(true);
         this.toggleMenu();
       });
-      this.toggleMusicBtnEl.addEventListener("click", () => {
+      this.toggleMusicEl.addEventListener("click", () => {
+        if (!this.music.isPlaying) {
+          document.getElementById("musicOn").classList.remove("hidden");
+          document.getElementById("musicOff").classList.add("hidden");
+        } else {
+          document.getElementById("musicOff").classList.remove("hidden");
+          document.getElementById("musicOn").classList.add("hidden");
+        }
         this.music.toggleMusic();
       });
     }
@@ -255,6 +262,7 @@ export class Game {
         this.sfx.playLooseSound();
         this.animateChips(this.dealer);
       }
+      this.updatePlayersTotalSum(false, youWin ? 'player' : 'dealer');
       this.updateChipsText();
     }
 
@@ -324,7 +332,7 @@ export class Game {
       buttonElements.forEach(btnEl => btnEl.setAttribute("disabled", "true"));
     }
 
-    updatePlayersTotalSum(playerOnly = false){
+    updatePlayersTotalSum(playerOnly = false, youWin = ''){
       const totalSumPlayer = this.getTotalValue(this.player);
       const totalSumDealer = this.getTotalValue(this.dealer);
       if(totalSumPlayer && totalSumDealer) {
@@ -333,6 +341,11 @@ export class Game {
         }else{
           this.playerTotalEl.textContent = "Sum: " + totalSumPlayer;
           this.dealerTotalEl.textContent = "Sum: " + totalSumDealer;
+          if(youWin == 'player'){
+            this.playerTotalEl.textContent = "Sum: " + totalSumPlayer + " You won";
+          } else if (youWin == 'dealer'){
+            this.playerTotalEl.textContent = "Sum: " + totalSumDealer + " You lost";
+          }
         }
       } else {
         this.playerTotalEl.textContent = "";
