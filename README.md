@@ -1,6 +1,6 @@
 # Black Jack 404
 
-This is a game I made during the js13kgames.js game jam. The theme was **404**, not an easy theme to work around, but this is what I came up with.
+This is a game I made during the [js13kgames 2020 game jam](https://js13kgames.com/). The theme was **404**, not an easy theme to work around, but this is what I came up with.
 
 My goal was always to make a game good enough to be in the top 100. There are a lot of good games submitted, so I am not sure if my game will make it.
 
