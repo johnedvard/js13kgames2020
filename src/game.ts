@@ -344,7 +344,7 @@ export class Game {
           if(youWin == 'player'){
             this.playerTotalEl.textContent = "Sum: " + totalSumPlayer + " You won";
           } else if (youWin == 'dealer'){
-            this.playerTotalEl.textContent = "Sum: " + totalSumDealer + " You lost";
+            this.playerTotalEl.textContent = "Sum: " + totalSumPlayer + " You lost";
           }
         }
       } else {
