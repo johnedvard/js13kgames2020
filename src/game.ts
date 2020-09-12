@@ -539,18 +539,20 @@ export class Game {
           },200);
         }
         setTimeout(()=> {
-          if (monetization && monetization.state === 'started') { 
+          if (monetization && monetization.state === 'started') {
             this.setSubscriber();
           }
         });
-        monetization.addEventListener('monetizationstart', () => {
-          if (monetization && monetization.state === 'started') { 
-            this.setSubscriber();
-          }
-        });
-        monetization.addEventListener('monetizationprogress', () => {
-          this.coinSubscriptionRoutine();
-        });
+        if(monetization){
+          monetization.addEventListener('monetizationstart', () => {
+            if (monetization && monetization.state === 'started') {
+              this.setSubscriber();
+            }
+          });
+          monetization.addEventListener('monetizationprogress', () => {
+            this.coinSubscriptionRoutine();
+          });
+        }
     }
     coinSubscriptionRoutine(){
       if(!this.isSubscriber) {
