@@ -1,7 +1,6 @@
 import { createCardDeck, shuffleDeck } from './cardUtils';
 import { Card } from './Icard';
 import { Player } from './player';
-import { Music } from './music';
 import { SFX } from './sfx';
 export class Game {
     modalEl: HTMLElement;
@@ -25,10 +24,9 @@ export class Game {
     currentCardBackEl: HTMLElement;
     newGameBtnEl: HTMLElement;
     totalChipsContainerEl: HTMLElement;
-    toggleMusicEl: HTMLElement;
+    toggleSfxEl: HTMLElement;
     betzoneProgressBarEl: HTMLElement;
     isSubscriber = false;
-    music: Music;
     sfx: SFX;
     deck: Card[];
     originalDeck: Card[];
@@ -46,7 +44,6 @@ export class Game {
         this.player = new Player(false);
         this.dealer = new Player(true);
         this.sfx = new SFX();
-        this.music = new Music();
         // TODO (johnedvard) create a start game button, so we can play music
         setTimeout(()=> {
           this.initNewGame();
@@ -75,7 +72,7 @@ export class Game {
         this.currentCardBackEl = document.getElementById('currentCardBack');
         this.newGameBtnEl = document.getElementById('newGameBtn');
         this.totalChipsContainerEl = document.getElementById('totalChipsContainer');
-        this.toggleMusicEl = document.getElementById('toggleMusic');
+        this.toggleSfxEl = document.getElementById('toggleSfx');
         this.betzoneProgressBarEl = document.getElementById('betzoneProgressBar');
         this.addEventListeners();
         this.updateButtonStates();
@@ -143,15 +140,15 @@ export class Game {
         this.startNextRound(true);
         this.toggleMenu();
       });
-      this.toggleMusicEl.addEventListener("click", () => {
-        if (!this.music.isPlaying) {
-          document.getElementById("musicOn").classList.remove("hidden");
-          document.getElementById("musicOff").classList.add("hidden");
+      this.toggleSfxEl.addEventListener("click", () => {
+        if (this.sfx.isMuted) {
+          document.getElementById("sfxOn").classList.remove("hidden");
+          document.getElementById("sfxOff").classList.add("hidden");
         } else {
-          document.getElementById("musicOff").classList.remove("hidden");
-          document.getElementById("musicOn").classList.add("hidden");
+          document.getElementById("sfxOff").classList.remove("hidden");
+          document.getElementById("sfxOn").classList.add("hidden");
         }
-        this.music.toggleMusic();
+        this.sfx.toggleSfx();
       });
     }
 
